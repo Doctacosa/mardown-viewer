@@ -27,6 +27,7 @@ foreach($files_raw as $file_data) {
 
 
 //Get the current file
+$page_title = 'Index';
 if (isset($file_full) && is_file($file_full)) {
 	$converter = new GithubFlavoredMarkdownConverter([
 		'html_input' => false,
@@ -38,6 +39,8 @@ if (isset($file_full) && is_file($file_full)) {
 
 	//Parse page links
 	$page_content = preg_replace('/\[\[(.*?).md\]\]/is', '<a href="$1">$1</a>', $page_content);
+
+	$page_title = ucfirst(str_replace('-', ' ', $file_requested));
 }
 
 
@@ -45,7 +48,7 @@ if (isset($file_full) && is_file($file_full)) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Creeper's Lab - Activity graph</title>
+	<title><?=$page_title?> - Notes viewer</title>
 
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -109,7 +112,7 @@ if (isset($file_full) && is_file($file_full)) {
 		<div class="main">
 			<?php
 			if (isset($page_content)) {
-				echo '<h1>'.str_replace('-', ' ', $file_requested).'</h1>';
+				echo '<h1>'.$page_title.'</h1>';
 				echo $page_content;
 			}
 			else
