@@ -10,19 +10,32 @@ if (isset($_REQUEST['debug']))
 if (empty($_GET['file']))
 	die('File parameter messing');
 
-$file = 'notes/'.$_GET['file'].'.md';
-if (!is_file($file))
+$file_requested = $_GET['file'];
+
+$file_full = 'notes/'.$_GET['file'].'.md';
+if (!is_file($file_full))
 	die('File not found');
 
 
+//Get the list of files
+$files_raw = scandir('notes/');
+$files = [];
+foreach($files_raw as $file_data) {
+	//TODO: Handle subdirectories
+	if ($file_data == '.' || $file_data == '..' || substr($file_data, -3) != '.md')
+		continue;
+	$files[] = substr($file_data, 0, -3);
+}
 
+
+//Get the current file
 $converter = new GithubFlavoredMarkdownConverter([
 	'html_input' => false,
 	'allow_unsafe_links' => 'true',
 	'max_nesting_level' => 15,
 	'use_underscore' => false,
 ]);
-$page_content = $converter->convertToHtml(file_get_contents($file));
+$page_content = $converter->convertToHtml(file_get_contents($file_full));
 
 
 ?>
@@ -37,10 +50,44 @@ $page_content = $converter->convertToHtml(file_get_contents($file));
 	<style>
 		@import "//www.interordi.com/files/css/normalize.css";
 		@import "//www.interordi.com/files/css/base.css";
+
+		.structure {
+			display: flex;
+		}
+
+		.files {
+			width: 250px;
+		}
+
+		.files li {
+			padding: 2px;
+		}
+
+		.selected {
+			background-color: rgba(0, 0, 0, 0.15);
+			padding: 3px;
+		}
 	</style>
 </head>
 
 <body>
-	<?=$page_content?>
+
+	<div class="structure">
+		<div class="files">
+			<h4>Pages</h4>
+			<ul>
+				<?php
+				foreach($files as $file_name) {
+					$selected = ($file_name == $file_requested) ? 'selected' : '';
+					echo '	<li><a href="'.$file_name.'" class="'.$selected.'">'.$file_name.'</a></li>';
+				}
+				?>
+			</ul>
+		</div>
+
+		<div class="main">
+			<?=$page_content?>
+		</div>
+	</div>
 </body>
 </html>
