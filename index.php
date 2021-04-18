@@ -52,7 +52,7 @@ if (isset($file_full) && is_file($file_full)) {
 
 	<style>
 		@import "//www.interordi.com/files/css/normalize.css";
-		@import "//www.interordi.com/files/css/base.css";
+		@import "//www.interordi.com/files/css/base-dark.css";
 
 		.structure {
 			display: flex;
