@@ -105,8 +105,10 @@ if (isset($file_full) && is_file($file_full)) {
 
 		<div class="main">
 			<?php
-			if (isset($page_content))
+			if (isset($page_content)) {
+				echo '<h1>'.str_replace('-', ' ', $file_requested).'</h1>';
 				echo $page_content;
+			}
 			else
 				echo '<p>Select a page.</p>';
 			?>
