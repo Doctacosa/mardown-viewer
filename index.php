@@ -7,14 +7,12 @@ use League\CommonMark\GithubFlavoredMarkdownConverter;
 if (isset($_REQUEST['debug']))
 	var_dump($_REQUEST);
 
-if (empty($_GET['file']))
-	die('File parameter messing');
 
-$file_requested = $_GET['file'];
-
-$file_full = 'notes/'.$_GET['file'].'.md';
-if (!is_file($file_full))
-	die('File not found');
+$file_requested = '';
+if (!empty($_GET['file'])) {
+	$file_requested = htmlentities($_GET['file']);
+	$file_full = 'notes/'.$_GET['file'].'.md';
+}
 
 
 //Get the list of files
@@ -29,13 +27,15 @@ foreach($files_raw as $file_data) {
 
 
 //Get the current file
-$converter = new GithubFlavoredMarkdownConverter([
-	'html_input' => false,
-	'allow_unsafe_links' => 'true',
-	'max_nesting_level' => 15,
-	'use_underscore' => false,
-]);
-$page_content = $converter->convertToHtml(file_get_contents($file_full));
+if (isset($file_full) && is_file($file_full)) {
+	$converter = new GithubFlavoredMarkdownConverter([
+		'html_input' => false,
+		'allow_unsafe_links' => 'true',
+		'max_nesting_level' => 15,
+		'use_underscore' => false,
+	]);
+	$page_content = $converter->convertToHtml(file_get_contents($file_full));
+}
 
 
 ?>
@@ -86,7 +86,12 @@ $page_content = $converter->convertToHtml(file_get_contents($file_full));
 		</div>
 
 		<div class="main">
-			<?=$page_content?>
+			<?php
+			if (isset($page_content))
+				echo $page_content;
+			else
+				echo '<p>Select a page.</p>';
+			?>
 		</div>
 	</div>
 </body>
