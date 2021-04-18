@@ -67,6 +67,24 @@ if (isset($file_full) && is_file($file_full)) {
 			background-color: rgba(0, 0, 0, 0.15);
 			padding: 3px;
 		}
+
+		h2 {
+			border-top: 1px solid #BBB;
+			padding-top: 10px;
+		}
+
+		@media all and (max-width: 700px) {
+			.structure {
+				display: block;
+			}
+
+			.files {
+				width: 100%;
+				border-bottom: 1px dotted #AAA;
+				overflow-y: auto;
+				max-height: 200px;
+			}
+		}
 	</style>
 </head>
 
