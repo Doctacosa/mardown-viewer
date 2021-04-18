@@ -35,6 +35,9 @@ if (isset($file_full) && is_file($file_full)) {
 		'use_underscore' => false,
 	]);
 	$page_content = $converter->convertToHtml(file_get_contents($file_full));
+
+	//Parse page links
+	$page_content = preg_replace('/\[\[(.*?).md\]\]/is', '<a href="$1">$1</a>', $page_content);
 }
 
 
