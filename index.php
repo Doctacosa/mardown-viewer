@@ -15,6 +15,17 @@ if (!empty($_GET['file'])) {
 }
 
 
+//Replace the generated headers with clickable targets
+function replaceHeaders($page_content, $type, &$replace_from, &$replace_to) {
+	preg_match_all('/<'.$type.'>(.*?)<\/'.$type.'>/is', $page_content, $matches);
+	foreach($matches[0] as $pos => $match) {
+		$key = str_replace(' ', '-', strtolower($matches[1][$pos]));
+		$replace_from[] = $match;
+		$replace_to[] = str_replace('<'.$type.'>', '<'.$type.' id="'.$key.'">', $match);
+	}
+}
+
+
 //Get the list of files
 $files_raw = scandir('notes/');
 $files = [];
@@ -39,6 +50,17 @@ if (isset($file_full) && is_file($file_full)) {
 
 	//Parse page links
 	$page_content = preg_replace('/\[\[(.*?).md\]\]/is', '<a href="$1">$1</a>', $page_content);
+
+	//Make headers clickable
+	$replace_from = [];
+	$replace_to = [];
+	replaceHeaders($page_content, 'h1', $replace_from, $replace_to);
+	replaceHeaders($page_content, 'h2', $replace_from, $replace_to);
+	replaceHeaders($page_content, 'h3', $replace_from, $replace_to);
+	replaceHeaders($page_content, 'h4', $replace_from, $replace_to);
+	replaceHeaders($page_content, 'h5', $replace_from, $replace_to);
+	replaceHeaders($page_content, 'h6', $replace_from, $replace_to);
+	$page_content = str_replace($replace_from, $replace_to, $page_content);
 
 	$page_title = ucfirst(str_replace('-', ' ', $file_requested));
 }
@@ -70,7 +92,7 @@ if (isset($file_full) && is_file($file_full)) {
 		}
 
 		.selected {
-			background-color: rgba(0, 0, 0, 0.15);
+			background-color: rgba(255, 255, 255, 0.2);
 			padding: 3px;
 		}
 
