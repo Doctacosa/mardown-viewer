@@ -75,6 +75,15 @@ if (isset($file_full) && is_file($file_full)) {
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+	<meta name="application-name" content="Markdown Viewer">
+	<meta name="msapplication-TileColor" content="#8e82dd">
+	<link rel="icon" href="favicon.ico">
+	<link rel="icon" href="icon.svg" type="image/svg+xml">
+	<link rel="apple-touch-icon" href="apple-touch-icon.png">
+	<link rel="manifest" href="manifest.webmanifest">
+
+	<meta name="theme-color" content="#8e82dd">
+
 	<style>
 		@import "//www.interordi.com/files/css/normalize.css";
 		@import "//www.interordi.com/files/css/base-dark.css";
