@@ -1,5 +1,7 @@
 # markdown-viewer
 
+![Logo](https://www.interordi.com/images/apps/markdown-viewer-96.png)
+
 This is a simple Markdown viewer meant to display the content of multiple .md files.
 
 The syntax in use follows the CommonMark spec with the GitHub Flavored Markdown extensions.
