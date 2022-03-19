@@ -63,6 +63,8 @@ if (isset($file_full) && is_file($file_full)) {
 	$page_content = str_replace($replace_from, $replace_to, $page_content);
 
 	$page_title = ucfirst(str_replace('-', ' ', $file_requested));
+
+	$page_last_update = gmdate('Y-m-d H:i:s', filemtime($file_full));
 }
 
 
@@ -122,6 +124,17 @@ if (isset($file_full) && is_file($file_full)) {
 				max-height: 200px;
 			}
 		}
+
+		.footer {
+			display: inline-block;
+			margin-top: 20px;
+			float: right;
+
+			padding: 5px;
+			opacity: 0.9;
+			font-size: 80%;
+			border: 1px dotted #555;
+		}
 	</style>
 </head>
 
@@ -145,6 +158,10 @@ if (isset($file_full) && is_file($file_full)) {
 			if (isset($page_content)) {
 				echo '<h1>'.$page_title.'</h1>';
 				echo $page_content;
+
+				echo '<div class="footer">
+					Last updated on '.$page_last_update.' UTC
+				</div>';
 			}
 			else
 				echo '<p>Select a page.</p>';
